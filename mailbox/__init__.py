@@ -43,10 +43,12 @@ class MailBox(object):
 
 		# Get the headers
 		headers = []
-		headers_keys = ['Received-SPF', 
-						'MIME-Version',
-						'X-Spam-Status',
-						'X-Spam-Score']
+		headers_keys = [
+			'Received-SPF', 
+			'MIME-Version',
+			'X-Spam-Status',
+			'X-Spam-Score'
+		]
 
 		for key in headers_keys:
 			header_value = email_dict.get(key)
@@ -56,13 +58,13 @@ class MailBox(object):
 					'Value': header_value})
 
 		return {
-			'MesssageID': message_id,
-			'From': from_dict,
-			'To': to_dict, 
-			'Subject': subject,
-			'Date': date,
-			'TextBody': text_body,
-			'Headers': headers
+			'id': message_id,
+			'from': from_dict,
+			'to': to_dict, 
+			'subject': subject,
+			'date': date,
+			'text_body': text_body,
+			'headers': headers
 		}
 
 	def fetch_by_uid(self, uid):
@@ -81,14 +83,22 @@ class MailBox(object):
 		for uid in uid_list:
 			messages_list.append(self.fetch_by_uid(uid))
 			
+	def get_messages(self, msg_status="ALL", msg_from=None, msg_since=None, mailbox=None)
+		self.connection.select()
+		if mailbox:
+			self.connection.select(mailbox)
+		search_parameters = []
+		search_parameters.append("({0})".format(msg_status))
+		if msg_from:
+			search_parameters.append('(FROM "{0}")'.format(msg_from))
+		if msg_since:
+			search_parameters.append('(SINCE {0})'.format(msg_since))
+		return self.connection.uid('search', None, ' '.join(search_parameters))
 
-	def get_all(self):
-		message, data = self.connection.uid('search', None, "ALL")
-
+	def get_all(self, msg_from=None, msg_since=None, mailbox=None):
+		_, data = self.get_messages(msg_status="ALL", msg_from=msg_from, msg_since=msg_since)
 		return self.fetch_list(data)
 
-
-	def get_unread(self):
-		message, data = self.connection.uid('search', None, "UNSEEN")
-
+	def get_unread(self, msg_from=None, msg_since=None, mailbox=None):
+		_, data = self.get_messages(msg_status="UNSEEN", msg_from=msg_from, msg_since=msg_since)
 		return self.fetch_list(data)
