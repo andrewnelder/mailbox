@@ -1,32 +1,34 @@
-import email
+## I M P O R T S #############################################################
+
+
 from imaplib import IMAP4, IMAP4_SSL
 
 
+## I M A P   T R A N S P O R T   C L A S S ###################################
+
+
 class ImapTransport(object):
-	
-	def __init__(self, hostname, port=None, ssl=False):
-		self.hostname = hostname
-		self.port = port
-		
-		if ssl:
-			self.transport = IMAP4_SSL
-			if not self.port:
-				self.port = 993
-		else:
-			self.transport = IMAP4
-			if not self.port:
-				self.port = 143
 
+    def __init__(self, hostname, port=None, ssl=False):
+        self.hostname = hostname
+        self.port = port
 
-	def list_folders(self):
-		return self.server.list()
+        if ssl:
+            self.transport = IMAP4_SSL
+            if not self.port:
+                self.port = 993
+        else:
+            self.transport = IMAP4
+            if not self.port:
+                self.port = 143
 
-	def connect(self, username, password):
-		self.server = self.transport(self.hostname, self.port)
-		typ, msg = self.server.login(username, password)
+    def list_folders(self):
+        return self.server.list()
 
-		self.server.select()
+    def connect(self, username, password):
+        self.server = self.transport(self.hostname, self.port)
+        typ, msg = self.server.login(username, password)
 
-		return self.server
-	
+        self.server.select()
 
+        return self.server
