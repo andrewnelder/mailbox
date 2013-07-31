@@ -87,12 +87,12 @@ class MailBox(object):
         # construct the search parameters
         search_parameters = []
         search_parameters.append("({0})".format(msg_status))
-        if msg_from:
-            if msg_from.lower() == 'today':
-                msg_from = datetime.today().strftime('%d-%b-%Y')
-            search_parameters.append('(FROM "{0}")'.format(msg_from))
         if msg_since:
+            if msg_since.lower() == 'today':
+                msg_since = datetime.today().strftime('%d-%b-%Y')
             search_parameters.append('(SINCE {0})'.format(msg_since))
+        if msg_from:
+            search_parameters.append('(FROM "{0}")'.format(msg_from))
         search_parameters_string = ' '.join(search_parameters)
 
         # perform server request and return a list of uids
