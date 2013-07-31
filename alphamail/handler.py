@@ -61,7 +61,7 @@ class MailBox(object):
 
         return {
             'id': uid,
-            'message-id': message_id,
+            'msg_id': message_id,
             'from_address': from_dict,
             'to_address': to_dict,
             'subject': subject,
