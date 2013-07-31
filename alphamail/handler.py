@@ -60,8 +60,8 @@ class MailBox(object):
 
         return {
             'id': message_id,
-            'from': from_dict,
-            'to': to_dict,
+            'from_address': from_dict,
+            'to_address': to_dict,
             'subject': subject,
             'date': date,
             'text_body': text_body,
